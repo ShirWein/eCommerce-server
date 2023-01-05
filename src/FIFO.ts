@@ -1,5 +1,6 @@
 import {AbstractCacheAlgo} from './index';
+import {ICacheAlgo} from './index';
 
-class Fifo implements AbstractCacheAlgo {
+export class Fifo<K, V> extends AbstractCacheAlgo<K, V> implements ICacheAlgo<K, V>  {
     
 } 

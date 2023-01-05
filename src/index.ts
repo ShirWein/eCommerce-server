@@ -1,52 +1,46 @@
-// ! This is the main memory - check this:
-let mainMemory: number | undefined [][]= [
-    [, ,]
-]
-let currentColumn = 0; //* This is a pointer for the current column.
+// // ! This is the main memory - check this:
+// let mainMemory: number | undefined [][]= [
+//     [, ,]
+// ]
+// let currentColumn = 0; //* This is a pointer for the current column.
 
 
 //* interface ICacheAlgo:
 
-interface ICacheAlgo {
-    getElement: (index: number) => number | undefined;
-    setElement: (index: number, V: number) => number | undefined;
-    removeElement: (index: number) => boolean;
+export interface ICacheAlgo<K, V> {
+    getElement(key:K) : V | undefined;
+    setElement(key: K, value: V) : K | undefined;
+    removeElement(key: K) : boolean;
 
 }
 
+//* abstract class AbstractCacheAlgo:
 
-//* abstract class AbstractCacheAlgo
-
-export class AbstractCacheAlgo implements ICacheAlgo {
-    key: string | undefined;
-    value: string | undefined;
-    // ! check if it is necessary: 
-    constructor(key:string, value:string) {
-        this.key = key;
-        this.value = value;
-    }
-    
-    getElement(index:number) {
-        return mainMemory[index][currentColumn];
+export class AbstractCacheAlgo<K, V> implements ICacheAlgo<K,V>{
+    cache: Map<K, V> = new Map();
+    capacity: number;  
+ 
+    getElement(key: K) : V | undefined {
+        return this.cache.get(key);
         
     };
 
-    setElement(index:number, value: number){
-        if (mainMemory[index][currentColumn]) {
-            this.removeElement(index)
-            this.setElement(index, value)
-            
+    setElement(key: K, value: V) : K | undefined {
+        //* if key exists in cache:
+        if (this.cache.get(key)) {
+            this.removeElement(key)
+            this.setElement(key, value)
         } else {
-            mainMemory[index][currentColumn] = value;
-            return index
+            this.cache.set(key, value);
+            return key;
         }
         return undefined;
     }
 
-    removeElement (index:number) {
+    removeElement (key: K) : boolean {
         //* If there was something to remove:
-        if (mainMemory[index][currentColumn]) {
-            mainMemory[index][currentColumn] = null;
+        if (this.cache.get(key)) {
+            this.cache.delete(key);
             return true;
         //* If there was no remove:
         } else {
@@ -55,8 +49,6 @@ export class AbstractCacheAlgo implements ICacheAlgo {
     }
 }
 
-
-//* concrete classes that implement caching
 
 
 
