@@ -19,7 +19,7 @@ export interface ICacheAlgo<K, V> {
 export class AbstractCacheAlgo<K, V> implements ICacheAlgo<K,V>{
     cache: Map<K, V> = new Map();
     capacity: number;  
- 
+    
     getElement(key: K) : V | undefined {
         return this.cache.get(key);
         
